@@ -1,6 +1,12 @@
-import $ from "jquery";
-import pdfIconHoverPng from "./images/pdf-icon-hover.png";
-import pdfIconPng from "./images/pdf-icon.png";
+//import $ from "jquery";
+
+//import pdfIconHoverPng from "./images/pdf-icon-hover.png";
+//import pdfIconPng from "./images/pdf-icon.png";
+
+// Comment or delete from production
+let pdfIconHoverPng = "./images/pdf-icon-hover.png";
+let pdfIconPng = "./images/pdf-icon.png";
+// End
 
 const mailTooltip = {
   id: ".heroMail",
@@ -23,6 +29,31 @@ const pdfIcon = {
   },
   out() {
     $(".summaryUrl img").attr("src", pdfIconPng);
+  }
+}
+
+function HeroText(id) {
+  const $id = $(id);
+
+  function splitToWords(hero) {
+    return $(hero).text()
+      .trim().split(" ");
+  }
+  function wrapCharsWithSpan(word) {
+    let chr = word.split("");
+    $(chr).each((j, ch) => {
+      chr[j] = "<span>" + ch + "</span>";
+    });
+    return chr.join("");
+  }
+
+  this.doWrap = () => {
+    let idWords = splitToWords($id);
+    $(idWords).each((i, word) => {
+      idWords[i] = wrapCharsWithSpan(word);
+    });
+    $id.empty();
+    $(idWords.join(" ")).appendTo($id);
   }
 }
 
@@ -64,6 +95,12 @@ function AddWorks(section) {
 function scrollUp() {
   $("html").scrollTop(0, 0);
 }
+
+const heroD = new HeroText(".heroDesigner");
+const heroN = new HeroText(".heroName");
+
+heroD.doWrap();
+heroN.doWrap();
 
 const menuPrint = new MenuItem("#pagePrint", "print");
 const menuWeb = new MenuItem("#pageWeb", "web");
