@@ -1,11 +1,11 @@
-//import $ from "jquery";
+import $ from "jquery";
 
-//import pdfIconHoverPng from "./images/pdf-icon-hover.png";
-//import pdfIconPng from "./images/pdf-icon.png";
+import pdfIconHoverPng from "./images/pdf-icon-hover.png";
+import pdfIconPng from "./images/pdf-icon.png";
 
 // Comment or delete from production
-let pdfIconHoverPng = "./images/pdf-icon-hover.png";
-let pdfIconPng = "./images/pdf-icon.png";
+//let pdfIconHoverPng = "./images/pdf-icon-hover.png";
+//let pdfIconPng = "./images/pdf-icon.png";
 // End
 
 const mailTooltip = {
@@ -109,6 +109,7 @@ const menuContact = new MenuItem("#pageContact", "contact");
 
 const addWorksPrint = new AddWorks("print");
 const addWorksWeb = new AddWorks("web");
+const addWorksGraphic = new AddWorks("graphic");
 
 $(menuPrint.id)
   .click(menuPrint.select)
@@ -131,6 +132,7 @@ $(pdfIcon.id).hover(pdfIcon.over, pdfIcon.out);
 
 $(addWorksPrint.id).click(addWorksPrint.show);
 $(addWorksWeb.id).click(addWorksWeb.show);
+$(addWorksGraphic.id).click(addWorksGraphic.show);
 
 $(".goUp").click(scrollUp);
 $(".goUpText").click(scrollUp);

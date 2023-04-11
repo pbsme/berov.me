@@ -6,6 +6,11 @@ function ObjCarousel(id) {
   let prev = 0;
   let next = 1;
 
+  function setrow() {
+    const $w = $(".work.w" + id);
+    const row = id;
+    $($w).css("grid-row", row);
+  }
   function remove() {
     $($images[prev]).removeClass("carImgPrev");
     $($images[next]).removeClass("carImgNext");
@@ -27,6 +32,7 @@ function ObjCarousel(id) {
     add();
   }
 
+  setrow();
   this.update();
 }
 
@@ -53,11 +59,13 @@ function MenuItem(page, url) {
 const caroW1 = new ObjCarousel(1);
 const caroW2 = new ObjCarousel(2);
 const caroW3 = new ObjCarousel(3);
+const caroW4 = new ObjCarousel(4);
 
 let caroAuto = setInterval(() => {
   caroW1.update();
   caroW2.update();
   caroW3.update();
+  caroW4.update();
 }, 3000);
 
 const menuContact = new MenuItem(".summaryWrap", "contact");
