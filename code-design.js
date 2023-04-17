@@ -3,11 +3,6 @@ import $ from "jquery";
 import pdfIconHoverPng from "./images/pdf-icon-hover.png";
 import pdfIconPng from "./images/pdf-icon.png";
 
-// Comment or delete from production
-//let pdfIconHoverPng = "./images/pdf-icon-hover.png";
-//let pdfIconPng = "./images/pdf-icon.png";
-// End
-
 const mailTooltip = {
   id: ".heroMail",
   show() {

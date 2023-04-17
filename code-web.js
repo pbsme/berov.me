@@ -1,16 +1,14 @@
 import $ from "jquery";
 
+import pdfIconHoverPng from "./images/pdf-icon-hover.png";
+import pdfIconPng from "./images/pdf-icon.png";
+
 function ObjCarousel(id) {
   const $images = $(".carousel[data-id='" + id + "'] img");
   const max = $images.length - 1;
   let prev = 0;
   let next = 1;
 
-  function setrow() {
-    const $w = $(".work.w" + id);
-    const row = id;
-    $($w).css("grid-row", row);
-  }
   function remove() {
     $($images[prev]).removeClass("carImgPrev");
     $($images[next]).removeClass("carImgNext");
@@ -32,34 +30,89 @@ function ObjCarousel(id) {
     add();
   }
 
-  setrow();
   this.update();
 }
 
-function scrollUp() {
-  $("html").scrollTop(0, 0);
+const mailCopy = {
+  id: ".btnHello",
+  copy() {
+    navigator.clipboard.writeText("hello@berov.me");
+    $(".btnHello").text("скопировано!");
+    setTimeout(() => {
+      $(".btnHello").text("hello@berov.me");
+    }, 3000);
+  }
+}
+
+const pdfIcon = {
+  id: ".summaryDlIcon",
+  over() {
+    $(".summaryDlIcon").attr("src", pdfIconHoverPng);
+  },
+  out() {
+    $(".summaryDlIcon").attr("src", pdfIconPng);
+  }
+}
+
+function HeroText(id) {
+  const $id = $(id);
+
+  function splitToWords(hero) {
+    return $(hero).text()
+      .trim().split(" ");
+  }
+  function wrapCharsWithSpan(word) {
+    let chr = word.split("");
+    $(chr).each((j, ch) => {
+      chr[j] = "<span>" + ch + "</span>";
+    });
+    return chr.join("");
+  }
+
+  this.doWrap = () => {
+    let idWords = splitToWords($id);
+    $(idWords).each((i, word) => {
+      idWords[i] = wrapCharsWithSpan(word);
+    });
+    $id.empty();
+    $(idWords.join(" ")).appendTo($id);
+  }
 }
 
 function MenuItem(page, url) {
   this.id = "a[data-url='" + url + "']";
   this.select = () => {
     event.preventDefault();
-    const $idSection = $(page);
-    const idPosition = $idSection.offset().top;
-    if ($idSection.hasClass("animate")) {
-      $idSection.removeClass("animate");
+    const $id = $(page);
+    const idPosition = $id.offset().top;
+    if ($id.hasClass("animate")) {
+      $id.removeClass("animate");
     }
     setTimeout((id) => {
       $(id).addClass("animate");
-    }, 10, $idSection);
-    $("html").scrollTop(idPosition - 80, 0);
+    }, 10, $id);
+    $("html").scrollTop(idPosition - 100, 0);
+  }
+  this.hover = () => {
+    const $id = $("a[data-url='" + url + "']");
+    const left = Math.ceil($id.position().left);
+    const width = Math.ceil($id.width());
+    const $block = $(".navBlock");
+    $block.css("left", left).css("width", width);
   }
 }
 
-const caroW1 = new ObjCarousel(1);
-const caroW2 = new ObjCarousel(2);
-const caroW3 = new ObjCarousel(3);
-const caroW4 = new ObjCarousel(4);
+function scrollUp() {
+  $("html").scrollTop(0, 0);
+}
+
+const heroF = new HeroText(".frontendChars");
+heroF.doWrap();
+
+const caroW1 = new ObjCarousel(101);
+const caroW2 = new ObjCarousel(201);
+const caroW3 = new ObjCarousel(202);
+const caroW4 = new ObjCarousel(203);
 
 let caroAuto = setInterval(() => {
   caroW1.update();
@@ -68,7 +121,17 @@ let caroAuto = setInterval(() => {
   caroW4.update();
 }, 3000);
 
-const menuContact = new MenuItem(".summaryWrap", "contact");
+const menuWorks = new MenuItem(".worksWrap", "works");
+const menuContacts = new MenuItem(".summaryWrap", "contacts");
 
-$(menuContact.id).click(menuContact.select);
+$(menuWorks.id)
+  .click(menuWorks.select)
+  .hover(menuWorks.hover);
+$(menuContacts.id)
+  .click(menuContacts.select)
+  .hover(menuContacts.hover);
+
+$(mailCopy.id).click(mailCopy.copy);
+
+$(pdfIcon.id).hover(pdfIcon.over, pdfIcon.out);
 $(".goUp").click(scrollUp);
