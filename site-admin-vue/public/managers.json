@@ -1,0 +1,42 @@
+[
+  {
+    "id": 0,
+    "name": "Emma Smith",
+    "login": "es@company.com"
+  },
+  {
+    "id": 1,
+    "name": "James Johnson",
+    "login": "jj@company.com"
+  },
+  {
+    "id": 2,
+    "name": "Emily Jones",
+    "login": "ej@company.com"
+  },
+  {
+    "id": 3,
+    "name": "David Williams",
+    "login": "dw@company.com"
+  },
+  {
+    "id": 4,
+    "name": "Michael Miller",
+    "login": "mm@company.com"
+  },
+  {
+    "id": 5,
+    "name": "Olivia Davis",
+    "login": "od@company.com"
+  },
+  {
+    "id": 6,
+    "name": "Isabella Taylor",
+    "login": "it@company.com"
+  },
+  {
+    "id": 7,
+    "name": "William Thomas",
+    "login": "wt@company.com"
+  }
+]

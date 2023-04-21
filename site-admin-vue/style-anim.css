@@ -1,0 +1,20 @@
+.v-enter-active,
+.v-leave-active {
+  transition: opacity var(--anim);
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.n-enter-active,
+.n-leave-active {
+  transition: opacity var(--anim), transform var(--anim);
+}
+
+.n-enter-from,
+.n-leave-to {
+  opacity: 0;
+  transform: translateX(-50px);
+}
