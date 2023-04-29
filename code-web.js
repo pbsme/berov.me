@@ -113,12 +113,14 @@ const caroW1 = new ObjCarousel(101);
 const caroW2 = new ObjCarousel(201);
 const caroW3 = new ObjCarousel(202);
 const caroW4 = new ObjCarousel(203);
+const caroW5 = new ObjCarousel(204);
 
 let caroAuto = setInterval(() => {
   caroW1.update();
   caroW2.update();
   caroW3.update();
   caroW4.update();
+  caroW5.update();
 }, 3000);
 
 const menuWorks = new MenuItem(".worksWrap", "works");

@@ -87,9 +87,32 @@ function AddWorks(section) {
   }
 }
 
+function CreateObserver(id, handler) {
+  const lazyImages = $(id).get();
+  const lazyObserver = new IntersectionObserver(load);
+  lazyImages.forEach((img) => {
+    lazyObserver.observe(img);
+  });
+
+  function load(entries) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const t = entry.target;
+        handler(t);
+        lazyObserver.unobserve(t);
+      }
+    });
+  }
+}
+
 function scrollUp() {
   $("html").scrollTop(0, 0);
 }
+
+const LazyImageLoad = new CreateObserver(".lazy", (t) => {
+  const src = t.dataset.src;
+  $(t).attr("src", src);
+});
 
 const heroD = new HeroText(".heroDesigner");
 const heroN = new HeroText(".heroName");
@@ -97,6 +120,7 @@ const heroN = new HeroText(".heroName");
 heroD.doWrap();
 heroN.doWrap();
 
+const menuWebsite = new MenuItem("#pageWebsite", "website");
 const menuPrint = new MenuItem("#pagePrint", "print");
 const menuWeb = new MenuItem("#pageWeb", "web");
 const menuGraphic = new MenuItem("#pageGraphic", "graphic");
@@ -106,6 +130,9 @@ const addWorksPrint = new AddWorks("print");
 const addWorksWeb = new AddWorks("web");
 const addWorksGraphic = new AddWorks("graphic");
 
+$(menuWebsite.id)
+  .click(menuWebsite.select)
+  .hover(menuWebsite.hover);
 $(menuPrint.id)
   .click(menuPrint.select)
   .hover(menuPrint.hover);
