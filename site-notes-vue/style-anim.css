@@ -1,0 +1,9 @@
+.v-enter-active,
+.v-leave-active {
+  transition: opacity var(--anim);
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
