@@ -109,6 +109,15 @@ function scrollUp() {
   $("html").scrollTop(0, 0);
 }
 
+function burgerMenu() {
+  const $navMenu = $(".navMenu");
+  if ($navMenu.css("display") == "none") {
+    $navMenu.css("display", "flex");
+  } else {
+    $navMenu.css("display", "none");
+  }
+}
+
 const LazyImageLoad = new CreateObserver(".lazy", (t) => {
   const src = t.dataset.src;
   $(t).attr("src", src);
@@ -126,6 +135,7 @@ const menuWeb = new MenuItem("#pageWeb", "web");
 const menuGraphic = new MenuItem("#pageGraphic", "graphic");
 const menuContact = new MenuItem("#pageContact", "contact");
 
+const addWorksWebsite = new AddWorks("website");
 const addWorksPrint = new AddWorks("print");
 const addWorksWeb = new AddWorks("web");
 const addWorksGraphic = new AddWorks("graphic");
@@ -152,9 +162,11 @@ $(mailTooltip.id)
 
 $(pdfIcon.id).hover(pdfIcon.over, pdfIcon.out);
 
+$(addWorksWebsite.id).click(addWorksWebsite.show);
 $(addWorksPrint.id).click(addWorksPrint.show);
 $(addWorksWeb.id).click(addWorksWeb.show);
 $(addWorksGraphic.id).click(addWorksGraphic.show);
 
 $(".goUp").click(scrollUp);
 $(".goUpText").click(scrollUp);
+$(".navBurger").click(burgerMenu);
