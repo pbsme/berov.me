@@ -1,32 +1,5 @@
 import $ from "jquery";
 
-import pdfIconHoverPng from "./images/pdf-icon-hover.png";
-import pdfIconPng from "./images/pdf-icon.png";
-
-const mailTooltip = {
-  id: ".heroMail",
-  show() {
-    $(".heroMail").text("Копировать");
-  },
-  hide() {
-    $(".heroMail").text("hello@berov.me");
-  },
-  copy() {
-    navigator.clipboard.writeText("hello@berov.me");
-    $(".heroMail").text("Скопировано!");
-  }
-}
-
-const pdfIcon = {
-  id: ".summaryUrl img",
-  over() {
-    $(".summaryUrl img").attr("src", pdfIconHoverPng);
-  },
-  out() {
-    $(".summaryUrl img").attr("src", pdfIconPng);
-  }
-}
-
 function HeroText(id) {
   const $id = $(id);
 
@@ -52,46 +25,45 @@ function HeroText(id) {
   }
 }
 
-function MenuItem(page, url) {
-  this.id = "a[data-url='" + url + "']";
+function MenuItem(page, nav) {
+  this.id = ".nav a[data-nav='" + nav + "']";
+  this.idf = ".footer-nav a[data-nav='" + nav + "']";
   this.select = () => {
     event.preventDefault();
     const $id = $(page);
-    const $idSection = $(page + " > .sectionContent");
     const idPosition = $id.offset().top;
-    if ($idSection.hasClass("animate")) {
-      $idSection.removeClass("animate");
-    }
-    setTimeout((id) => {
-      $(id).addClass("animate");
-    }, 10, $idSection);
     $("html").scrollTop(idPosition, 0);
   }
   this.hover = () => {
-    const $id = $("a[data-url='" + url + "']");
+    const $id = $(".nav a[data-nav='" + nav + "']");
     const left = Math.ceil($id.position().left);
     const width = Math.ceil($id.width());
-    const $block = $(".navBlock");
+    const $block = $(".nav-block");
     $block.css("left", left).css("width", width);
   }
 }
 
-function AddWorks(section) {
-  this.id = ".addWorksButton[data-works='" + section + "']";
+function MoreWorks(section) {
+  this.idShow = ".work-btn-showmore[data-works='" + section + "']";
+  this.idClose = ".more-back-image[data-more='" + section + "']";
   this.show = () => {
-    const $button = $(".addWorksButton[data-works='" + section + "']");
-    const $section = $(".addWorks[data-works='" + section + "']");
-    $button.hide();
-    $section.addClass("animate");
-    $section.css("display", "flex");
+    const $section = $(".more-works[data-more='" + section + "']");
+    $("body").css("overflow-y", "hidden");
+    $section.show();
+  }
+  this.close = () => {
+    const $section = $(".more-works[data-more='" + section + "']");
+    $("body").css("overflow-y", "initial");
+    $section.hide();
   }
 }
 
 function CreateObserver(id, handler) {
-  const lazyImages = $(id).get();
-  const lazyObserver = new IntersectionObserver(load);
-  lazyImages.forEach((img) => {
-    lazyObserver.observe(img);
+  const getIDs = $(id).get();
+  const options = { rootMargin: "0px 0px -100px 0px" }
+  const newObserver = new IntersectionObserver(load, options);
+  getIDs.forEach((img) => {
+    newObserver.observe(img);
   });
 
   function load(entries) {
@@ -99,7 +71,7 @@ function CreateObserver(id, handler) {
       if (entry.isIntersecting) {
         const t = entry.target;
         handler(t);
-        lazyObserver.unobserve(t);
+        newObserver.unobserve(t);
       }
     });
   }
@@ -109,64 +81,61 @@ function scrollUp() {
   $("html").scrollTop(0, 0);
 }
 
-function burgerMenu() {
-  const $navMenu = $(".navMenu");
-  if ($navMenu.css("display") == "none") {
-    $navMenu.css("display", "flex");
-  } else {
-    $navMenu.css("display", "none");
-  }
-}
-
 const LazyImageLoad = new CreateObserver(".lazy", (t) => {
   const src = t.dataset.src;
   $(t).attr("src", src);
 });
 
-const heroD = new HeroText(".heroDesigner");
-const heroN = new HeroText(".heroName");
+const ObsAnimFromLeft = new CreateObserver("[data-anim='fromleft']", (t) => {
+  const anim = t.dataset.anim;
+  $(t).css("visibility", "visible").addClass("animate-from-left");
+});
+
+const ObsAnimFromRight = new CreateObserver("[data-anim='fromright']", (t) => {
+  const anim = t.dataset.anim;
+  $(t).css("visibility", "visible").addClass("animate-from-right");
+});
+
+const ObsAnimFromDown = new CreateObserver("[data-anim='fromdown']", (t) => {
+  const anim = t.dataset.anim;
+  $(t).css("visibility", "visible").addClass("animate-from-down");
+});
+
+const heroD = new HeroText(".me-chars");
 
 heroD.doWrap();
-heroN.doWrap();
 
-const menuWebsite = new MenuItem("#pageWebsite", "website");
-const menuPrint = new MenuItem("#pagePrint", "print");
-const menuWeb = new MenuItem("#pageWeb", "web");
-const menuGraphic = new MenuItem("#pageGraphic", "graphic");
-const menuContact = new MenuItem("#pageContact", "contact");
+const menuAbout = new MenuItem("#nav-about", "about");
+const menuWorks = new MenuItem("#nav-works", "works");
+const menuResume = new MenuItem("#nav-resume", "resume");
 
-const addWorksWebsite = new AddWorks("website");
-const addWorksPrint = new AddWorks("print");
-const addWorksWeb = new AddWorks("web");
-const addWorksGraphic = new AddWorks("graphic");
+const moreWorksWebsites = new MoreWorks("websites");
+const moreWorksPrints = new MoreWorks("prints");
+const moreWorksBanners = new MoreWorks("banners");
+const moreWorksGraphics = new MoreWorks("graphics");
 
-$(menuWebsite.id)
-  .click(menuWebsite.select)
-  .hover(menuWebsite.hover);
-$(menuPrint.id)
-  .click(menuPrint.select)
-  .hover(menuPrint.hover);
-$(menuWeb.id)
-  .click(menuWeb.select)
-  .hover(menuWeb.hover);
-$(menuGraphic.id)
-  .click(menuGraphic.select)
-  .hover(menuGraphic.hover);
-$(menuContact.id)
-  .click(menuContact.select)
-  .hover(menuContact.hover);
+$(menuAbout.id)
+  .click(menuAbout.select)
+  .hover(menuAbout.hover);
+$(menuWorks.id)
+  .click(menuWorks.select)
+  .hover(menuWorks.hover);
+$(menuResume.id)
+  .click(menuResume.select)
+  .hover(menuResume.hover);
 
-$(mailTooltip.id)
-  .click(mailTooltip.copy)
-  .hover(mailTooltip.show, mailTooltip.hide);
+$(menuAbout.idf).click(menuAbout.select);
+$(menuWorks.idf).click(menuWorks.select);
+$(menuResume.idf).click(menuResume.select);
 
-$(pdfIcon.id).hover(pdfIcon.over, pdfIcon.out);
+$(moreWorksWebsites.idShow).click(moreWorksWebsites.show);
+$(moreWorksPrints.idShow).click(moreWorksPrints.show);
+$(moreWorksBanners.idShow).click(moreWorksBanners.show);
+$(moreWorksGraphics.idShow).click(moreWorksGraphics.show);
 
-$(addWorksWebsite.id).click(addWorksWebsite.show);
-$(addWorksPrint.id).click(addWorksPrint.show);
-$(addWorksWeb.id).click(addWorksWeb.show);
-$(addWorksGraphic.id).click(addWorksGraphic.show);
+$(moreWorksWebsites.idClose).click(moreWorksWebsites.close);
+$(moreWorksPrints.idClose).click(moreWorksPrints.close);
+$(moreWorksBanners.idClose).click(moreWorksBanners.close);
+$(moreWorksGraphics.idClose).click(moreWorksGraphics.close);
 
-$(".goUp").click(scrollUp);
-$(".goUpText").click(scrollUp);
-$(".navBurger").click(burgerMenu);
+$(".top-image").click(scrollUp);
